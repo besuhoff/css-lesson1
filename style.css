@@ -122,11 +122,12 @@ h2 {
 
 #calculator .investment-info .row {
     padding: 10px 0;
+    vertical-align: middle;
 }
 
 #calculator .investment-info .col {
     display: inline-block;
-    vertical-align: middle;
+    float: none;
 }
 
 #calculator .investment-info .col-label {

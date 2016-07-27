@@ -1,0 +1,143 @@
+* {
+    box-sizing: border-box;
+}
+
+body, html {
+    height: 100%;
+    padding: 0;
+    margin: 0;
+}
+
+body {
+    font-family: arial, sans-serif;
+    font-size: 13px;
+    color: #fff;
+}
+
+#all {
+    background: #001c4b; /* Old browsers */
+    background: -moz-linear-gradient(top, #001c4b 0%, #0168b5 50%, #011d4c 100%); /* FF3.6-15 */
+    background: -webkit-linear-gradient(top, #001c4b 0%,#0168b5 50%,#011d4c 100%); /* Chrome10-25,Safari5.1-6 */
+    background: linear-gradient(to bottom, #001c4b 0%,#0168b5 50%,#011d4c 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+}
+
+h1, h2, h3, h4, h5 {
+    font-family: 'Noto Sans', sans-serif;
+    color: #9ec15f;
+    font-weight: normal;
+}
+
+h2 {
+    font-size: 26px;
+}
+
+#all {
+    min-height: 100%;
+}
+
+.container {
+    width: 86%;
+    max-width: 1170px;
+    margin: 0 auto;
+    padding: 60px 0 40px;
+}
+
+#calculator {
+    background: rgba(0, 41, 85, 0.51);
+    border: 1px solid rgba(172, 209, 234, 0.25);
+    border-radius: 12px;
+}
+
+#calculator .row:after {
+    display: block;
+    content: '';
+    clear: both;
+    font-size: 0;
+}
+
+#calculator .col {
+    float: left;
+}
+
+#calculator > .row > .col {
+    padding: 28px;
+}
+
+#calculator > .row > .col-left {
+    width: 35%;
+}
+
+#calculator > .row > .col-right {
+    width: 65%;
+}
+
+#calculator .accounts-table .header {
+    color: #939393;
+    font-style: italic;
+    font-size: 12px;
+    padding: 0 0 6px;
+}
+
+#calculator .accounts-table {
+    line-height: 16px;
+    margin: -6px 0;
+}
+
+#calculator .accounts-table .row {
+    margin: 0 -10px;
+}
+
+#calculator .accounts-table .col {
+    padding: 6px 10px;
+}
+
+#calculator .accounts-table .row.active .col {
+    color: #00050a;
+    background: #66CAFE;
+}
+
+#calculator .accounts-table .col-name {
+    padding-right: 12px;
+    border-radius: 0 5px 5px 0;
+    max-width: 50%;
+}
+
+#calculator .accounts-table .col-account {
+    width: 76px;
+    max-width: 50%;
+    border-radius: 5px 0 0 5px;
+}
+
+#calculator .accounts-table .account-number {
+    border-bottom: 1px dashed;
+    line-height: 14px;
+    display: inline-block;
+    cursor: pointer;
+}
+
+#calculator .accounts-table .row.active .account-number {
+    border-bottom-color: transparent;
+    cursor: default;
+}
+
+#calculator .investment-info .row {
+    padding: 10px 0;
+}
+
+#calculator .investment-info .col {
+    display: inline-block;
+    vertical-align: middle;
+}
+
+#calculator .investment-info .col-label {
+    color: #66CAFE;
+    font-style: italic;
+    width: 50%;
+}
+
+#calculator .investment-info .col-data {
+    font-size: 30px;
+    font-weight: bold;
+    width: 50%;
+    text-align: right;
+}

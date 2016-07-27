@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Калькулятор</title>
+  <link href='https://fonts.googleapis.com/css?family=Noto+Sans&subset=latin,cyrillic' rel='stylesheet' type='text/css'>
+  <link href="style.css" type="text/css" rel="stylesheet">
+</head>
+<body>
+<div id="all">
+  <div class="container">
+    <h2>Если&nbsp;бы на&nbsp;прошлой неделе вы инвестировали в&nbsp;ПАММ-счет успешного управляющего</h2>
+    <div id="calculator">
+      <div class="row">
+        <div class="col col-left">
+          <div class="accounts-table">
+            <div class="header row">
+              <div class="col col-account">№ счета</div>
+              <div class="col col-name">Управляющий</div>
+            </div>
+            <div class="body">
+
+            </div>
+          </div>
+        </div>
+        <div class="col col-right">
+          <input type="range" name="investment" value="1000" min="0" max="100000">
+
+          <div class="investment-info">
+            <div class="row" data-result="multiplier">
+              <div class="col col-label">Сегодня ваш депозит&nbsp;бы составил</div><!--
+          --><div class="col col-data"></div>
+            </div>
+
+            <div class="row" data-result="perYear">
+              <div class="col col-label">За&nbsp;год при повторении вклада заработали&nbsp;бы</div><!--
+          --><div class="col col-data"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<script type="text/template" id="account-row-template">
+   <div class="row template" data-account-id="{{account}}">
+      <div class="col col-account"><span class="account-number">{{account}}</span></div>
+      <div class="col col-name">{{name}}</div>
+   </div>
+</script>
+
+<script>
+  var activeRow;
+
+  function formatCurrency(number, currencySymbol, precision) {
+    precision = precision || 0;
+    currencySymbol = currencySymbol || '';
+    var integer = number.toFixed(0).split('').reverse(),
+      result = [];
+
+    integer.forEach(function(symbol, index) {
+      result.push(symbol);
+      if (index % 3 === 2) {
+        result.push(' ')
+      }
+    });
+
+    return result.reverse().join('') +
+      (+precision ? number.toFixed(+precision).replace(/^.*\./, '.') : '') +
+      (currencySymbol ? ('&nbsp;' + currencySymbol) : '');
+  }
+
+  function renderInvestmentData(rowData) {
+    var container = document.querySelector('#calculator'),
+      source = container.querySelector('input[name="investment"]').value;
+
+    container.querySelector('.investment-info .row[data-result="multiplier"] .col-data')
+      .innerHTML = formatCurrency(source * rowData.multiplier, '$', 0);
+
+    // 52 is a magic number for amount of weeks in a year
+    container.querySelector('.investment-info .row[data-result="perYear"] .col-data')
+      .innerHTML = formatCurrency(source * 52 * rowData.perYear, '$', 0);
+  }
+
+  function selectRow(element, rowData) {
+    var active = document.querySelector('#calculator .accounts-table .body [data-account-id].active');
+    if (active) {
+      active.classList.remove('active');
+    }
+
+    element.classList.add('active');
+
+    activeRow = rowData;
+
+    renderInvestmentData(rowData);
+  }
+
+  function renderAccounts(data) {
+    var template = document.querySelector('script[type="text/template"]#account-row-template').innerHTML,
+      container = document.querySelector('#calculator .accounts-table .body');
+
+    data.forEach(function(rowData) {
+      container.innerHTML += template
+        .replace(/\{\{account}}/g, rowData.account)
+        .replace(/\{\{name}}/g, rowData.name);
+
+    });
+
+    data.forEach(function(rowData) {
+      container.querySelector('[data-account-id="' + rowData.account + '"]').addEventListener('click', function() {
+        selectRow(this, rowData);
+      });
+    });
+
+    document.querySelector('#calculator input[name="investment"]').addEventListener('input', function() {
+      if (activeRow) {
+        renderInvestmentData(activeRow);
+      }
+    });
+  }
+
+  var accounts = [
+    {account: '11970', name: 'Galax', multiplier: 1.265, perYear: 2.7},
+    {account: '7348', name: 'Veronica', multiplier: 1.12, perYear: 2.0},
+    {account: '10555', name: 'Dragonfly', multiplier: 1.023, perYear: 1.796},
+    {account: '10504', name: 'Condor', multiplier: 1.04, perYear: 1.81},
+    {account: '10469', name: 'Shark_007', multiplier: 1.17, perYear: 2.13}
+  ];
+
+  renderAccounts(accounts);
+  selectRow(document.querySelector('#calculator .accounts-table .body [data-account-id]:first-of-type'), accounts[0]);
+
+</script>
+
+</body>
+</html>

@@ -25,7 +25,13 @@
           </div>
         </div>
         <div class="col col-right">
-          <input type="range" name="investment" value="1000" min="0" max="100000">
+          <form class="investment-form">
+            <output name="popup" for="investment"></output>
+            <div class="range-holder">
+              <input type="range" name="investment" value="1000" min="0" max="10000">
+              <output name="fill-upper"></output>
+            </div>
+          </form>
 
           <div class="investment-info">
             <div class="row" data-result="multiplier">
@@ -55,7 +61,8 @@
 <script>
   var activeRow;
 
-  function formatCurrency(number, currencySymbol, precision) {
+  function formatCurrency(number, currencySymbol, precision, html) {
+    number = +number;
     precision = precision || 0;
     currencySymbol = currencySymbol || '';
     var integer = number.toFixed(0).split('').reverse(),
@@ -70,7 +77,7 @@
 
     return result.reverse().join('') +
       (+precision ? number.toFixed(+precision).replace(/^.*\./, '.') : '') +
-      (currencySymbol ? ('&nbsp;' + currencySymbol) : '');
+      (currencySymbol ? ((html ? '&nbsp;' : '\u00A0') + currencySymbol) : '');
   }
 
   function renderInvestmentData(rowData) {
@@ -78,11 +85,11 @@
       source = container.querySelector('input[name="investment"]').value;
 
     container.querySelector('.investment-info .row[data-result="multiplier"] .col-data')
-      .innerHTML = formatCurrency(source * rowData.multiplier, '$', 0);
+      .innerHTML = formatCurrency(source * rowData.multiplier, '$', 0, true);
 
     // 52 is a magic number for amount of weeks in a year
     container.querySelector('.investment-info .row[data-result="perYear"] .col-data')
-      .innerHTML = formatCurrency(source * 52 * rowData.perYear, '$', 0);
+      .innerHTML = formatCurrency(source * 52 * rowData.perYear, '$', 0, true);
   }
 
   function selectRow(element, rowData) {
@@ -115,11 +122,22 @@
       });
     });
 
-    document.querySelector('#calculator input[name="investment"]').addEventListener('input', function() {
+    function renderInput() {
+      var output = document.querySelector('[name="popup"]'),
+        input = document.querySelector('#calculator input[name="investment"]');
+      output.value = formatCurrency(input.value, '$', 0);
+      output.style.left = (input.value / input.max) * 100 + '%';
+      output.style.marginLeft = -1 * output.clientWidth / 2 + 'px';
+      document.querySelector('[name="fill-upper"]').style.width = (input.value / input.max) * 100 + '%';
+
       if (activeRow) {
         renderInvestmentData(activeRow);
       }
-    });
+    }
+
+    document.querySelector('#calculator input[name="investment"]').addEventListener('input', renderInput);
+
+    renderInput();
   }
 
   var accounts = [
